@@ -1,16 +1,72 @@
-extern crate rand;
+use piston_window::EventLoop;
+use piston_window::{UpdateEvent, RenderEvent, PressEvent, ReleaseEvent};
+use enum_iterator::IntoEnumIterator;
 
-use crate::rand::Rng;
+mod game;
+mod input;
 
 fn main() {
-    println!("Hello, world!");
-    println!("hi");
+    
+    // Build window
 
-    let mut rand = rand::thread_rng();
+    let mut window: piston_window::PistonWindow = 
+        piston_window::WindowSettings::new("Window", [1280, 720]) // Create window with a title and size
+        .vsync(true) // Vsync caps framerate to monitor refresh rate
+        .build().expect("Could not build piston window!"); // Attempt to create window (Should almost always work but catch and error if not)
 
-    let random_number = rand.gen_range(0..10);
+    window.events.set_ups(30); // game updates 30 times per second
 
-    println!("{}", random_number);
+    // Create game instance
+
+    let mut game = game::Game::new();
+
+    // Load stuff
+
+    game.load();
+
+    // Run game loop
+
+    while let Some(e) = window.next() {
+
+        // Handle input changes and update
+
+        if let Some(_) = e.update_args() {
+            game.input();
+            for i in input::Control::into_enum_iter() {
+                if game.input.controls[i] == 1 { // if key = pressed,
+                    game.input.controls[i] = 2; // key = held down
+                }
+            }
+            game.update();
+        }
+
+        // Render stuff to screen
+
+        if let Some(_) = e.render_args() {
+            window.draw_2d(&e, |mut ctx, g, _device| {
+                piston_window::clear([0.0, 0.0, 0.0, 1.0], g); // clear the last frame from the screen
+                game.render(&mut ctx, g); // render the new frame
+            });
+        }
+
+        // Handle button presses
+
+        if let Some(ref button) = e.press_args() {
+            if let Some(i) = game.input.keymap.get(button) {
+                game.input.controls[*i] = 1;
+            }
+        }
+
+        if let Some(ref button) = e.release_args() {
+            if let Some(i) = game.input.keymap.get(button) {
+                game.input.controls[*i] = 3;
+            }
+        }
+
+    }
+
+    // Run a function when quitting game
+
+    game.quit();
 
 }
-// joe mama balls

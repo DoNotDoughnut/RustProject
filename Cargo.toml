@@ -1,10 +1,18 @@
 [package]
 name = "rust-project"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Rhys Holloway <rhyswilliamholloway@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rand = "0.8"
+
+# Game engine
+
+piston_window = "0.117" # To-do: Use/create game engine that supports WebAssembly
+
+# Other
+
+enum-map = "0.6.4"
+enum-iterator = "0.6.0"
