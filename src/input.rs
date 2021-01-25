@@ -4,8 +4,8 @@ use piston_window::Button;
 
 pub struct Input {
 
-    pub controls: EnumMap<Control, u8>, // 0 = Key is up, 1 = Key pressed, 2 = Key held
-    pub keymap: HashMap<Button, Control>, // Map keys to controls
+    pub controls: EnumMap<Control, ControlState>,
+    pub buttonmap: HashMap<Button, Control>, // Map keys to controls
 
 }
 
@@ -14,31 +14,36 @@ impl Input {
     pub fn new() -> Self {
         use piston_window::Key;
         
-        // Add key mappings to controls (with a hashmap)
+        // Add button mappings to controls (with a hashmap)
 
-        let mut keymap = HashMap::new();
-        keymap.insert(Button::Keyboard(Key::X), Control::A);
-        keymap.insert(Button::Keyboard(Key::Z), Control::B);
-        keymap.insert(Button::Keyboard(Key::Up), Control::Up);
-        keymap.insert(Button::Keyboard(Key::Down), Control::Down);
-        keymap.insert(Button::Keyboard(Key::Left), Control::Left);
-        keymap.insert(Button::Keyboard(Key::Right), Control::Right);
+        let mut buttonmap = HashMap::new();
+
+        // Keyboard buttons
+
+        buttonmap.insert(Button::Keyboard(Key::X), Control::A);
+        buttonmap.insert(Button::Keyboard(Key::Z), Control::B);
+        buttonmap.insert(Button::Keyboard(Key::Up), Control::Up);
+        buttonmap.insert(Button::Keyboard(Key::Down), Control::Down);
+        buttonmap.insert(Button::Keyboard(Key::Left), Control::Left);
+        buttonmap.insert(Button::Keyboard(Key::Right), Control::Right);
+
+        use ControlState::Up;
 
         Self {
-            keymap: keymap,
+            buttonmap: buttonmap,
             controls: enum_map! { // Set all controls to their default state (not pressed)
-                Control::A => 0,
-                Control::B => 0,
-                Control::Up => 0,
-                Control::Down => 0,
-                Control::Left => 0,
-                Control::Right => 0,
+                Control::A => Up,
+                Control::B => Up,
+                Control::Up => Up,
+                Control::Down => Up,
+                Control::Left => Up,
+                Control::Right => Up,
             },
         }
     }
 
     pub fn is_down(&self, control: Control) -> bool { // check if button is pressed or held
-        self.controls[control] == 1 || self.controls[control] == 2
+        self.controls[control] == ControlState::Pressed || self.controls[control] == ControlState::Held
     }
 
 }
@@ -57,5 +62,14 @@ pub enum Control {
     Down,
     Left,
     Right,
+
+}
+
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum ControlState {
+
+    Up,
+    Pressed,
+    Held,
 
 }

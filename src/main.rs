@@ -1,3 +1,4 @@
+use input::ControlState;
 use piston_window::EventLoop;
 use piston_window::{UpdateEvent, RenderEvent, PressEvent, ReleaseEvent};
 use enum_iterator::IntoEnumIterator;
@@ -14,7 +15,7 @@ fn main() {
         .vsync(true) // Vsync caps framerate to monitor refresh rate
         .build().expect("Could not build piston window!"); // Attempt to create window (Should almost always work but catch and error if not)
 
-    window.events.set_ups(30); // game updates 30 times per second
+    window.set_ups(30); // game updates 30 times per second
 
     // Create game instance
 
@@ -26,15 +27,17 @@ fn main() {
 
     // Run game loop
 
+    let controls = input::Control::into_enum_iter();
+
     while let Some(e) = window.next() {
 
         // Handle input changes and update
 
         if let Some(_) = e.update_args() {
             game.input();
-            for i in input::Control::into_enum_iter() {
-                if game.input.controls[i] == 1 { // if key = pressed,
-                    game.input.controls[i] = 2; // key = held down
+            for i in controls {
+                if game.input.controls[i] == ControlState::Pressed { // if key = pressed,
+                    game.input.controls[i] = ControlState::Held; // key = held down
                 }
             }
             game.update();
@@ -52,14 +55,14 @@ fn main() {
         // Handle button presses
 
         if let Some(ref button) = e.press_args() {
-            if let Some(i) = game.input.keymap.get(button) {
-                game.input.controls[*i] = 1;
+            if let Some(i) = game.input.buttonmap.get(button) {
+                game.input.controls[*i] = ControlState::Pressed;
             }
         }
 
         if let Some(ref button) = e.release_args() {
-            if let Some(i) = game.input.keymap.get(button) {
-                game.input.controls[*i] = 3;
+            if let Some(i) = game.input.buttonmap.get(button) {
+                game.input.controls[*i] = ControlState::Up;
             }
         }
 
