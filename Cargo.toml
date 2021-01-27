@@ -29,3 +29,6 @@ parking_lot = "0.11.1" # For faster mutex
 
 #[target.'cfg(windows)'.build-dependencies]
 #winres = "0.1.11"
+
+[profile.release]
+lto = true
