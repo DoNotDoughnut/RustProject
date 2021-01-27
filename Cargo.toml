@@ -6,7 +6,7 @@ description = "Shared project for learning Rust"
 repository = "https://github.com/DoNotDoughnut/RustProject"
 edition = "2018"
 
-[dependencies]
+[dependencies] # Kira and gilrs depend on a lot of stuff which will take up a lot of space 
 
 # Game engine
 
@@ -14,8 +14,10 @@ macroquad = "0.3.0-alpha.14"
 
 # Audio
 
-# kira = "0.4.1"
+# kira = "0.4.1" # General audio manager
 
 # Other
+
+image = { version = "0.22", default-features = false, features = ["png_codec", "tga"] } # For loading images from bytes, already included in macroquad
 
 # gilrs = "0.8" # Gamepad controls
