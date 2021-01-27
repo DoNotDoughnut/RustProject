@@ -1,10 +1,11 @@
 use macroquad::prelude::Image;
-use macroquad::prelude::KeyCode;
 use macroquad::prelude::Texture2D;
 use macroquad::prelude::Vec2;
 use macroquad::prelude::draw_texture;
-use macroquad::prelude::is_key_down;
 use macroquad::prelude::load_texture_from_image;
+
+use crate::input::Control;
+use crate::input::is_control_down;
 
 pub struct Player {
 
@@ -19,25 +20,25 @@ pub struct Player {
 impl Player {
 
     pub fn update(&mut self, delta: f32) {
-        if is_key_down(KeyCode::Up) {
+        if is_control_down(Control::Up) {
             self.pos.y -= self.speed * delta;
             if self.pos.y < 0.0 {
                 self.pos.y = 0.0;
             }
         }
-        if is_key_down(KeyCode::Down) {
+        if is_control_down(Control::Down) {
             self.pos.y += self.speed * delta;
             if self.pos.y + self.hitbox.y > crate::HEIGHT as f32 {
                 self.pos.y = (crate::HEIGHT as f32) - self.hitbox.y;
             }
         }
-        if is_key_down(KeyCode::Left) {
+        if is_control_down(Control::Left) {
             self.pos.x -= self.speed * delta;
             if self.pos.x < 0.0 {
                 self.pos.x = 0.0;
             }
         }
-        if is_key_down(KeyCode::Right) {
+        if is_control_down(Control::Right) {
             self.pos.x += self.speed * delta;
             if self.pos.x + self.hitbox.x > crate::WIDTH as _ {
                 self.pos.x = (crate::WIDTH as f32) - self.hitbox.x;
