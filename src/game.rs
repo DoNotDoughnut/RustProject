@@ -1,11 +1,12 @@
-use crate::input::{Input, Control};
+use macroquad::prelude::KeyCode;
+use macroquad::prelude::draw_rectangle;
+use macroquad::prelude::is_key_down;
+use macroquad::prelude::{Vec2, vec2};
+
 
 pub struct Game {
 
-    pub input: Input,
-
-    x: f64, // cube x and y
-    y: f64,
+    cube_pos: Vec2,
 
 }
 
@@ -13,42 +14,37 @@ impl Game {
 
     pub fn new() -> Self {
         Self {
-            input: Input::new(),
-            x: 200.0,
-            y: 200.0,
+            cube_pos: vec2(50.0, 50.0),
         }
     }
 
     pub fn load(&mut self) {
-
+        
     }
     
-    pub fn update(&mut self) {
-    
-    }
-    
-    pub fn render(&self, ctx: &mut piston_window::Context, g: &mut piston_window::G2d) {
-        piston_window::rectangle_from_to([1.0, 0.0, 0.0, 1.0], [self.x, self.y], [self.x + 50.0, self.y + 50.0], ctx.transform, g);
-    }
-    
-    pub fn input(&mut self) {
-        if self.input.is_down(Control::Up) {
-            self.y -= 3.0;
+    pub fn update(&mut self, delta: f32) { // delta * frame rate = 1
+        if is_key_down(KeyCode::Up) {
+            self.cube_pos.y -= 100.0 * delta;
         }
-        if self.input.is_down(Control::Down) {
-            self.y += 3.0;
+        if is_key_down(KeyCode::Down) {
+            self.cube_pos.y += 100.0 * delta;
         }
-        if self.input.is_down(Control::Left) {
-            self.x -= 3.0;
+        if is_key_down(KeyCode::Left) {
+            self.cube_pos.x -= 100.0 * delta;
         }
-        if self.input.is_down(Control::Right) {
-            self.x += 3.0;
+        if is_key_down(KeyCode::Right) {
+            self.cube_pos.x += 100.0 * delta;
+        }
+        if macroquad::prelude::is_key_pressed(KeyCode::Key1) {
+            println!("{}", delta);
         }
     }
     
-    pub fn quit(&mut self) {
-    
+    pub fn render(&self) {
+        draw_rectangle(self.cube_pos.x, self.cube_pos.y, 50.0, 50.0, macroquad::prelude::RED);
     }
+    
+    // pub fn quit(&mut self) {}
 
 }
 

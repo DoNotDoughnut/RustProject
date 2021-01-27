@@ -1,75 +1,32 @@
-use input::ControlState;
-use piston_window::EventLoop;
-use piston_window::{UpdateEvent, RenderEvent, PressEvent, ReleaseEvent};
-use enum_iterator::IntoEnumIterator;
+use macroquad::prelude::*;
 
 mod game;
-mod input;
 
-fn main() {
-    
-    // Build window
+pub static NAME: &str = env!("CARGO_PKG_NAME");
+pub static WIDTH: u16 = 640;
+pub static HEIGHT: u16 = 480;
 
-    let mut window: piston_window::PistonWindow = 
-        piston_window::WindowSettings::new("Window", [1280, 720]) // Create window with a title and size
-        .vsync(true) // Vsync caps framerate to monitor refresh rate
-        .build().expect("Could not build piston window!"); // Attempt to create window (Should almost always work but catch and error if not)
+#[macroquad::main(settings)] // Macroquad creates a window
+async fn main() {
 
-    window.set_ups(30); // game updates 30 times per second
+    let mut game = game::Game::new(); // Create an instance to hold game variables and structures
 
-    // Create game instance
+    game.load(); // Load stuff
 
-    let mut game = game::Game::new();
-
-    // Load stuff
-
-    game.load();
-
-    // Run game loop
-
-    let controls = input::Control::into_enum_iter();
-
-    while let Some(e) = window.next() {
-
-        // Handle input changes and update
-
-        if let Some(_) = e.update_args() {
-            game.input();
-            for i in controls {
-                if game.input.controls[i] == ControlState::Pressed { // if key = pressed,
-                    game.input.controls[i] = ControlState::Held; // key = held down
-                }
-            }
-            game.update();
-        }
-
-        // Render stuff to screen
-
-        if let Some(_) = e.render_args() {
-            window.draw_2d(&e, |mut ctx, g, _device| {
-                piston_window::clear([0.0, 0.0, 0.0, 1.0], g); // clear the last frame from the screen
-                game.render(&mut ctx, g); // render the new frame
-            });
-        }
-
-        // Handle button presses
-
-        if let Some(ref button) = e.press_args() {
-            if let Some(i) = game.input.buttonmap.get(button) {
-                game.input.controls[*i] = ControlState::Pressed;
-            }
-        }
-
-        if let Some(ref button) = e.release_args() {
-            if let Some(i) = game.input.buttonmap.get(button) {
-                game.input.controls[*i] = ControlState::Up;
-            }
-        }
-
+    loop { // runs at monitor refresh rate (usually 60 times per second)
+        game.update(get_frame_time()); // Update the game state (with delta (frame) time so physics and such can run at a constant speed no matter what the framerate is)
+        clear_background(GRAY);
+        game.render(); // render the stuff on screen
+        next_frame().await; // wait for the next frame before looping
     }
 
-    // Run a function when quitting game
+}
 
-    game.quit();
-
+fn settings() -> Conf { // Window settings
+    Conf {
+        window_title: String::from(NAME),
+        window_width: WIDTH as _,
+        window_height: HEIGHT as _,
+        ..Default::default()     
+    }
 }
