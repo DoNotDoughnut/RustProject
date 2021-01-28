@@ -19,7 +19,7 @@ pub struct Player {
 
 impl Player {
 
-    pub fn update(&mut self, delta: f32) {
+    pub fn update(&mut self, delta: f32) { // Multiplying speed by delta makes the speed constant across all framerates
         if is_control_down(Control::Up) {
             self.pos.y -= self.speed * delta;
             if self.pos.y < 0.0 {
@@ -28,7 +28,7 @@ impl Player {
         }
         if is_control_down(Control::Down) {
             self.pos.y += self.speed * delta;
-            if self.pos.y + self.hitbox.y > crate::HEIGHT as f32 {
+            if self.pos.y + self.hitbox.y > crate::HEIGHT as f32 { // Check if the hitbox of the player exceeds the bounds of the window
                 self.pos.y = (crate::HEIGHT as f32) - self.hitbox.y;
             }
         }
@@ -48,19 +48,21 @@ impl Player {
     }
 
     pub fn render(&self) {
-        draw_texture(self.texture, self.pos.x, self.pos.y, macroquad::prelude::WHITE);
+        draw_texture(self.texture, self.pos.x, self.pos.y, macroquad::prelude::WHITE); // Draw the player image
     }
     
 }
 
 impl Default for Player {
     fn default() -> Self {
-        let image = Image::from_file_with_format(include_bytes!("../build/assets/player.png"), Some(image::ImageFormat::PNG)); // Loads a PNG image that is included as bytes in the executable file
+        let image = Image::from_file_with_format( // Load an image from bytes and specify what format it is
+            include_bytes!("../build/assets/player.png"), // Include image bytes in executable file
+            Some(image::ImageFormat::PNG)); // Tell the image loader that the bytes are from a PNG
         Self {
             pos: Vec2::new(10.0, 10.0),
             hitbox: Vec2::new(image.width as _, image.height as _),
             speed: 100.0,
-            texture: load_texture_from_image(&image),
+            texture: load_texture_from_image(&image), // Set the image to be the player image
         }
     }
 }
