@@ -11,15 +11,13 @@ build = "build/build.rs"
 
 # Game engine
 
-macroquad = "0.3.0-alpha.14"
+macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" }
 
 # Audio
 
 # kira = "0.4.1" # General audio manager
 
 # Other
-
-image = { version = "0.22", default-features = false, features = ["png_codec", "tga"] } # For loading images from bytes, already included in macroquad
 
 ahash = "0.7.0" # Faster hashmap
 lazy_static = "1.4.0" # For the input hashmap
