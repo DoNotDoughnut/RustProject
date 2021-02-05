@@ -1,7 +1,9 @@
+use configuration::Configuration;
 use macroquad::prelude::*;
 
 mod game;
 mod input;
+mod configuration;
 mod world;
 
 pub static NAME: &str = env!("CARGO_PKG_NAME"); // name of project in Cargo.toml used as a variable in code
@@ -32,10 +34,12 @@ async fn main() {
 }
 
 fn settings() -> Conf { // Window settings
+    let configuration = Configuration::default();
+    println!("{}", nanoserde::SerJson::serialize_json(&configuration)); // can save and load this from a JSON file, this is an example for now
     Conf {
-        window_title: String::from(NAME),
-        window_width: (WIDTH*SCALE) as _,
-        window_height: (HEIGHT*SCALE) as _,
+        window_title: configuration.name,
+        window_width: configuration.window_width as _,
+        window_height: configuration.window_height as _,
         ..Default::default()     
     }
 }
