@@ -1,4 +1,4 @@
-use ahash::AHashMap;
+use std::collections::HashMap;
 use macroquad::prelude::Texture2D;
 use u16 as MapSize;
 use super::TILE_SIZE;
@@ -6,7 +6,7 @@ use super::TileId;
 use super::level_builder::LevelBuilder;
 use super::tile::Tile;
 
-type TexMap = AHashMap<TileId, Texture2D>;
+type TexMap = HashMap<TileId, Texture2D>;
 
 #[derive(Default)]
 pub struct Level {

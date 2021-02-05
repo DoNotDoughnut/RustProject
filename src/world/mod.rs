@@ -7,7 +7,7 @@ mod player;
 
 pub mod level_builder;
 
-use ahash::AHashMap;
+use std::collections::HashMap;
 use macroquad::prelude::Texture2D;
 pub use u16 as TileId;
 pub static TILE_SIZE: u16 = 8;
@@ -16,14 +16,14 @@ pub struct World {
 
     level: Level,
     player: Player,
-    textures: AHashMap<TileId, Texture2D>,
+    textures: HashMap<TileId, Texture2D>,
 
 }
 
 impl World {
 
     pub fn new() -> Self {
-        let mut textures = AHashMap::new();
+        let mut textures = HashMap::new();
         textures.insert(0, tex_bytes(include_bytes!("../../build/assets/tile0.png")).unwrap());
         textures.insert(1, tex_bytes(include_bytes!("../../build/assets/tile1.png")).unwrap());
         Self {

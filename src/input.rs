@@ -1,4 +1,4 @@
-use ahash::{AHashMap, AHashSet};
+use std::collections::{HashMap, HashSet};
 use macroquad::prelude::KeyCode;
 
 pub fn is_control_down(control: Control) -> bool {
@@ -26,8 +26,8 @@ lazy_static::lazy_static! {
     // AHashMaps are faster hashmaps
     // RwLock allows the HashMap to be written to and read from multiple threads (but we dont use more than 1 thread, its just a safety guarantee)
     // Note: DashMap crate could be better for this
-    static ref KEY_CONTROLS: AHashMap<Control, AHashSet<KeyCode>> = { // create a global hashmap for the controls
-        let mut controls = AHashMap::new();
+    static ref KEY_CONTROLS: HashMap<Control, HashSet<KeyCode>> = { // create a global hashmap for the controls
+        let mut controls = HashMap::new();
 
          // Set the controls for the game
 
@@ -40,8 +40,8 @@ lazy_static::lazy_static! {
     };    
 }
 
-fn set_of(codes: &[KeyCode]) -> AHashSet<KeyCode> { // Helper method
-    let mut set = AHashSet::new();
+fn set_of(codes: &[KeyCode]) -> HashSet<KeyCode> { // Helper method
+    let mut set = HashSet::new();
     for code in codes {
         set.insert(*code);
     }    

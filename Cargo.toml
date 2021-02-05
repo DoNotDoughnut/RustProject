@@ -6,26 +6,15 @@ description = "Shared project for learning Rust"
 repository = "https://github.com/DoNotDoughnut/RustProject"
 edition = "2018"
 build = "build/build.rs"
+readme = "README.md"
 
-[dependencies] # Kira and gilrs depend on a lot of stuff which will take up a lot of space 
+[dependencies]
 
-# Game engine
-
-macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" }
-
-# Audio
-
-# kira = "0.4.1" # General audio manager
-
-# Other
-
+macroquad = { git = "https://github.com/DoNotDoughnut/macroquad", default-features = false, features = ["log-impl"] }
 nanoserde = "0.1.22" # Serialization and deserialization
-
-ahash = "0.7" # Faster hashmap
+# ahash = "0.7" # Faster hashmap
 lazy_static = "1.4" # For global variables
-parking_lot = "0.11" # For faster Mutex and RwLock
-
-# gilrs = "0.8" # Gamepad controls
+# parking_lot = "0.11" # For faster Mutex and RwLock
 
 #[target.'cfg(windows)'.build-dependencies]
 #winres = "0.1.11"
@@ -34,3 +23,4 @@ parking_lot = "0.11" # For faster Mutex and RwLock
 lto = true
 codegen-units = 1
 opt-level = 3
+incremental = false # Prevents the saving of compile data to disk which speeds up the next compile (saves a lot of space)

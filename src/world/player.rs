@@ -17,9 +17,9 @@ pub struct Player {
 
 }
 
-impl Player {
+impl crate::Entity for Player {
 
-    pub fn update(&mut self, delta: f32) { // Multiplying speed by delta makes the speed constant across all framerates
+    fn update(&mut self, delta: f32) { // Multiplying speed by delta makes the speed constant across all framerates
         if is_control_down(Control::Up) {
             self.pos.y -= self.speed * delta;
             if self.pos.y < 0.0 {
@@ -47,7 +47,7 @@ impl Player {
         
     }
 
-    pub fn render(&self) {
+    fn render(&self) {
         draw_texture(self.texture, self.pos.x, self.pos.y, macroquad::prelude::WHITE); // Draw the player image
     }
     
@@ -57,7 +57,8 @@ impl Default for Player {
     fn default() -> Self {
         let image = Image::from_file_with_format( // Load an image from bytes and specify what format it is
             include_bytes!("../../build/assets/player.png"), // Include image bytes in executable file
-            Some(macroquad::prelude::ImageFormat::Png)).unwrap(); // Tell the image loader that the bytes are from a PNG
+            Some(macroquad::prelude::ImageFormat::Png)) // Tell the image loader that the bytes are from a PNG
+            .unwrap(); // Unwrap the image from the result because there should be no error (panic if there is one)
         Self {
             pos: Vec2::new(10.0, 10.0),
             hitbox: Vec2::new(image.width as _, image.height as _),
