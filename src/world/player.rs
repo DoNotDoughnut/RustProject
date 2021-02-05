@@ -56,8 +56,8 @@ impl Player {
 impl Default for Player {
     fn default() -> Self {
         let image = Image::from_file_with_format( // Load an image from bytes and specify what format it is
-            include_bytes!("../build/assets/player.png"), // Include image bytes in executable file
-            Some(macroquad::prelude::ImageFormat::PNG)); // Tell the image loader that the bytes are from a PNG
+            include_bytes!("../../build/assets/player.png"), // Include image bytes in executable file
+            Some(macroquad::prelude::ImageFormat::Png)).unwrap(); // Tell the image loader that the bytes are from a PNG
         Self {
             pos: Vec2::new(10.0, 10.0),
             hitbox: Vec2::new(image.width as _, image.height as _),

@@ -2,19 +2,17 @@ use macroquad::prelude::*;
 
 mod game;
 mod input;
-mod player;
+mod world;
 
 pub static NAME: &str = env!("CARGO_PKG_NAME"); // name of project in Cargo.toml used as a variable in code
-pub static SCALE: u16 = 2; // pixel scaling (pixels drawn on window are 2x normal pixel size)
-pub static WIDTH: u16 = 320; // view width
-pub static HEIGHT: u16 = 240; // view height
+pub static SCALE: u16 = 3; // pixel scaling (pixels drawn on window are 2x normal pixel size)
+pub static WIDTH: u16 = 240; // view width
+pub static HEIGHT: u16 = 160; // view height
 
 #[macroquad::main(settings)] // Macroquad creates a window
 async fn main() {
 
     info!("Starting {}", NAME);
-
-    input::set_controls(); // Set the controls for the game
 
     let mut game = game::Game::new(); // Create an instance to hold game variables and structures
 
@@ -40,4 +38,12 @@ fn settings() -> Conf { // Window settings
         window_height: (HEIGHT*SCALE) as _,
         ..Default::default()     
     }
+}
+
+pub trait Entity {
+
+    fn update(&mut self, delta: f32);
+
+    fn render(&self);
+
 }

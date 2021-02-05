@@ -19,9 +19,11 @@ macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" }
 
 # Other
 
-ahash = "0.7.0" # Faster hashmap
-lazy_static = "1.4.0" # For the input hashmap
-parking_lot = "0.11.1" # For faster mutex
+#nanoserde = "0.1.22" # Serialization and deserialization
+
+ahash = "0.7" # Faster hashmap
+lazy_static = "1.4" # For global variables
+parking_lot = "0.11" # For faster Mutex and RwLock
 
 # gilrs = "0.8" # Gamepad controls
 
