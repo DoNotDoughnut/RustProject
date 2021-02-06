@@ -14,7 +14,7 @@ pub fn is_control_pressed(control: Control) -> bool {
     return false; // Return false if not a desktop, no keys for control or any keys mapped to the control were pressed
 }
 
-pub fn is_control_down(control: Control) -> bool {
+pub fn is_control_down(control: Control) -> bool { // Look to function above for details on how this function works
     if crate::DESKTOP {
         if let Some(keys) = KEY_CONTROLS.get(&control) {
             for key in keys {

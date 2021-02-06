@@ -1,4 +1,3 @@
-use crate::game::GAME_STATE;
 use crate::gui::button::Button;
 use crate::input::Control;
 use crate::input::is_control_pressed;
@@ -86,9 +85,7 @@ impl MainMenu {
     fn click(&mut self) { // Button click actions
         match Buttons::from(self.selected_button) {
             Buttons::Play => {
-                unsafe {
-                    GAME_STATE = crate::game::GameState::World; // Change the game state
-                }
+                crate::game::change_game_state(crate::game::GameState::World);
             }
             Buttons::Options => {
                 macroquad::prelude::info!("Not implemented yet!");

@@ -1,26 +1,27 @@
 [package]
-name = "rust-project"
+name = "brawlstars-rs"
 version = "0.0.1"
-authors = ["Rhys Holloway <rhyswilliamholloway@gmail.com>", "Johnny Lin"]
-description = "Shared project for learning Rust"
+authors = [
+    "Rhys Holloway <rhyswilliamholloway@gmail.com>", 
+    "Johnny Lin", 
+    "Nareg K."
+]
+description = """
+Shared project for learning Rust, attempt to make a clone of the game Brawlstars
+"""
 repository = "https://github.com/DoNotDoughnut/RustProject"
 edition = "2018"
 build = "build/build.rs"
 readme = "README.md"
+publish = false
 
 [dependencies]
 
-macroquad = { git = "https://github.com/DoNotDoughnut/macroquad", default-features = false, features = ["log-impl", "text"] }
-# nanoserde = "0.1.22" # Serialization and deserialization
-# ahash = "0.7" # Faster hashmap
+macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" } # Game engine
 lazy_static = "1.4" # For global variables
-# parking_lot = "0.11" # For faster Mutex and RwLock
-
-#[target.'cfg(windows)'.build-dependencies]
-#winres = "0.1.11"
 
 [profile.release]
-lto = true
+lto = true # Results in faster code at the cost of greater compile times
 codegen-units = 1
-opt-level = 3
+opt-level = 3 # Maximum optimization for speed
 incremental = false # Prevents the saving of compile data to disk which speeds up the next compile (saves a lot of space)

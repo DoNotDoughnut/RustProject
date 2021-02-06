@@ -8,8 +8,8 @@ pub struct Button {
     pub width: f32,
     pub height: f32,
     pub color: Color,
-    pub text: Option<String>,
-    button_params: ButtonParams,
+    pub text: Option<String>, // Options are like null, can either store a variable or not
+    button_params: ButtonParams, // Extra variables so there doesnt need to be math done every render
 
 }
 
@@ -35,9 +35,11 @@ impl Button {
     pub fn render(&self, selected: bool) {
         macroquad::prelude::draw_rectangle(self.x, self.y, self.width, self.height, self.color);
         if selected {
+            // If selected, render a white border around the button
             macroquad::prelude::draw_rectangle_lines(self.x, self.y, self.width, self.height, self.button_params.thickness, WHITE);
         }
-        if let Some(text) = self.text.as_ref() {
+        if let Some(text) = self.text.as_ref() { // Check if the button has text
+            // Draw the text of the button
             macroquad::prelude::draw_text(&text, self.button_params.text_x, self.button_params.text_y, self.button_params.font_size, WHITE);
         }
     }
