@@ -1,6 +1,17 @@
 use std::collections::{HashMap, HashSet};
 use macroquad::prelude::KeyCode;
 
+pub fn is_control_pressed(control: Control) -> bool {
+    if let Some(keys) = KEY_CONTROLS.get(&control) {
+        for key in keys {
+            if macroquad::prelude::is_key_pressed(*key) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 pub fn is_control_down(control: Control) -> bool {
     if let Some(keys) = KEY_CONTROLS.get(&control) {
         for key in keys {
@@ -15,6 +26,7 @@ pub fn is_control_down(control: Control) -> bool {
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 pub enum Control { // List of controls for game
 
+    A,
     Up,
     Down,
     Left,
@@ -31,6 +43,7 @@ lazy_static::lazy_static! {
 
          // Set the controls for the game
 
+        controls.insert(Control::A, set_of(&[KeyCode::X]));
         controls.insert(Control::Up, set_of(&[KeyCode::Up, KeyCode::W]));
         controls.insert(Control::Down, set_of(&[KeyCode::Down, KeyCode::S]));
         controls.insert(Control::Left, set_of(&[KeyCode::Left, KeyCode::A]));

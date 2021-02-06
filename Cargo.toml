@@ -10,7 +10,7 @@ readme = "README.md"
 
 [dependencies]
 
-macroquad = { git = "https://github.com/DoNotDoughnut/macroquad", default-features = false, features = ["log-impl"] }
+macroquad = { git = "https://github.com/DoNotDoughnut/macroquad", default-features = false, features = ["log-impl", "text"] }
 nanoserde = "0.1.22" # Serialization and deserialization
 # ahash = "0.7" # Faster hashmap
 lazy_static = "1.4" # For global variables

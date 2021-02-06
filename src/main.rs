@@ -1,20 +1,26 @@
-use configuration::Configuration;
 use macroquad::prelude::*;
 
 mod game;
 mod input;
 mod configuration;
+mod gui;
+
+mod menu;
 mod world;
 
-pub static NAME: &str = env!("CARGO_PKG_NAME"); // name of project in Cargo.toml used as a variable in code
-pub static SCALE: u16 = 3; // pixel scaling (pixels drawn on window are 2x normal pixel size)
-pub static WIDTH: u16 = 240; // view width
-pub static HEIGHT: u16 = 160; // view height
+pub static NAME: &str = "Brawlstars Clone"; // name of project
+pub static SCALE: u8 = 2; // pixel scaling (pixels drawn on window are 2x normal pixel size)
+pub static WIDTH: u16 = 640; // view width
+pub static HEIGHT: u16 = WIDTH * 9 / 16; // view height
+
+pub static mut RUNNING: bool = true;
 
 #[macroquad::main(settings)] // Macroquad creates a window
 async fn main() {
 
     info!("Starting {}", NAME);
+
+    //let configuration = crate::configuration::Configuration::load_or_default().await;
 
     let mut game = game::Game::new(); // Create an instance to hold game variables and structures
 
@@ -23,7 +29,7 @@ async fn main() {
     let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32, HEIGHT as f32)); // Create a camera to view the screen with
     set_camera(camera); // activate the camera
 
-    loop { // runs at monitor refresh rate (usually 60 times per second)
+    while unsafe{RUNNING} { // runs at monitor refresh rate (usually 60 times per second)
         
         game.update(get_frame_time()); // Update the game state (with delta (frame) time so physics and such can run at a constant speed no matter what the framerate is)
         clear_background(GRAY);
@@ -31,16 +37,22 @@ async fn main() {
         next_frame().await; // wait for the next frame before looping
     }
 
+    game.quit();
+
 }
 
 fn settings() -> Conf { // Window settings
-    let configuration = Configuration::default();
-    println!("{}", nanoserde::SerJson::serialize_json(&configuration)); // can save and load this from a JSON file, this is an example for now
     Conf {
-        window_title: configuration.name,
-        window_width: configuration.window_width as _,
-        window_height: configuration.window_height as _,
+        window_title: NAME.to_owned(),
+        window_width: WIDTH as i32 * SCALE as i32,
+        window_height: HEIGHT as i32 * SCALE as i32,
         ..Default::default()     
+    }
+}
+
+pub fn quit() { // Function to run to queue the close sequence of the app
+    unsafe {
+        RUNNING = false;
     }
 }
 
