@@ -2,21 +2,25 @@ use std::collections::{HashMap, HashSet};
 use macroquad::prelude::KeyCode;
 
 pub fn is_control_pressed(control: Control) -> bool {
-    if let Some(keys) = KEY_CONTROLS.get(&control) {
-        for key in keys {
-            if macroquad::prelude::is_key_pressed(*key) {
-                return true;
+    if crate::DESKTOP { // If device is a computer
+        if let Some(keys) = KEY_CONTROLS.get(&control) { // Get the keys for the control pressed
+            for key in keys { // Iterate through the keys
+                if macroquad::prelude::is_key_pressed(*key) { // Check if the key was pressed
+                    return true; // Return true if the key was pressed
+                }
             }
         }
     }
-    return false;
+    return false; // Return false if not a desktop, no keys for control or any keys mapped to the control were pressed
 }
 
 pub fn is_control_down(control: Control) -> bool {
-    if let Some(keys) = KEY_CONTROLS.get(&control) {
-        for key in keys {
-            if macroquad::prelude::is_key_down(*key) {
-                return true;
+    if crate::DESKTOP {
+        if let Some(keys) = KEY_CONTROLS.get(&control) {
+            for key in keys {
+                if macroquad::prelude::is_key_down(*key) {
+                    return true;
+                }
             }
         }
     }
@@ -53,7 +57,7 @@ lazy_static::lazy_static! {
     };    
 }
 
-fn set_of(codes: &[KeyCode]) -> HashSet<KeyCode> { // Helper method
+fn set_of(codes: &[KeyCode]) -> HashSet<KeyCode> { // Helper method, creates a set of keys from an array
     let mut set = HashSet::new();
     for code in codes {
         set.insert(*code);

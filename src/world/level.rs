@@ -17,8 +17,6 @@ pub struct Level {
 
 }
 
-
-
 impl Level {
 
     pub fn debug_level() -> Self {

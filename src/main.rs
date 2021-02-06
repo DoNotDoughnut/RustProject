@@ -2,7 +2,7 @@ use macroquad::prelude::*;
 
 mod game;
 mod input;
-mod configuration;
+//mod configuration;
 mod gui;
 
 mod menu;
@@ -13,7 +13,9 @@ pub static SCALE: u8 = 2; // pixel scaling (pixels drawn on window are 2x normal
 pub static WIDTH: u16 = 640; // view width
 pub static HEIGHT: u16 = WIDTH * 9 / 16; // view height
 
-pub static mut RUNNING: bool = true;
+pub static DESKTOP: bool = cfg!(target_os = "windows") || cfg!(target_os = "macos") || cfg!(target_os = "linux");
+
+pub static mut RUNNING: bool = true; // Creates a boolean that, when false, allows the program to end
 
 #[macroquad::main(settings)] // Macroquad creates a window
 async fn main() {
@@ -29,15 +31,16 @@ async fn main() {
     let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32, HEIGHT as f32)); // Create a camera to view the screen with
     set_camera(camera); // activate the camera
 
-    while unsafe{RUNNING} { // runs at monitor refresh rate (usually 60 times per second)
+    while unsafe{RUNNING} /* unsafe code because RUNNING is not thread-safe (were only using 1 thread) */ { // runs at monitor refresh rate (usually 60 times per second)
         
         game.update(get_frame_time()); // Update the game state (with delta (frame) time so physics and such can run at a constant speed no matter what the framerate is)
         clear_background(GRAY);
         game.render(); // render the stuff on screen
         next_frame().await; // wait for the next frame before looping
+
     }
 
-    game.quit();
+    game.quit(); // Run the quit() method for stuff that needs to do things when the game closes
 
 }
 
@@ -46,6 +49,7 @@ fn settings() -> Conf { // Window settings
         window_title: NAME.to_owned(),
         window_width: WIDTH as i32 * SCALE as i32,
         window_height: HEIGHT as i32 * SCALE as i32,
+        sample_count: 4,
         ..Default::default()     
     }
 }

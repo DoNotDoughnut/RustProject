@@ -31,7 +31,7 @@ impl Game {
     
     pub fn update(&mut self, delta: f32) { // delta * frame rate = 1
         unsafe {
-            if GAME_STATE != self.game_state {
+            if GAME_STATE != self.game_state { // Change the game state if it is different to the stored one
                 self.quit_state();
                 self.game_state = GAME_STATE;
             }
@@ -42,16 +42,16 @@ impl Game {
             }
             GameState::World => {
                 self.world.update(delta);
-                if macroquad::prelude::is_key_pressed(macroquad::prelude::KeyCode::F1) {
-                    info!("Frame Time: {}, FPS: {}", delta, get_fps());
+                if macroquad::prelude::is_key_pressed(macroquad::prelude::KeyCode::F1) { 
+                    info!("Frame Time: {}, FPS: {}", delta, get_fps()); // Show frame time and FPS when F1 is clicked
                 }
             }
         }
         
     }
     
-    pub fn render(&self) {
-        match &self.game_state {
+    pub fn render(&self) { // Render the game
+        match &self.game_state { // Choose the correct game state to render
             GameState::MainMenu => {
                 self.main_menu.render();
             }
@@ -61,7 +61,7 @@ impl Game {
         }
     }
 
-    fn quit_state(&mut self) {
+    fn quit_state(&mut self) { // Unimplemented
         match &self.game_state {
             GameState::MainMenu => {
 

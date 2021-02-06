@@ -40,17 +40,17 @@ impl MainMenu {
                 50.0,
                 macroquad::prelude::RED,
                 Some("Quit")
-            )
+            ),
         }
     }
 
     pub fn update(&mut self, _delta: f32) {
-        if macroquad::prelude::is_mouse_button_pressed(macroquad::prelude::MouseButton::Left) {
-            let mut pos = macroquad::prelude::mouse_position();
-            pos.0 /= crate::SCALE as f32;
+        if macroquad::prelude::is_mouse_button_pressed(macroquad::prelude::MouseButton::Left) { // Test for left click
+            let mut pos = macroquad::prelude::mouse_position(); // Get mouse position
+            pos.0 /= crate::SCALE as f32; // Scale the mouse position
             pos.1 /= crate::SCALE as f32;
-            if 20.0 <= pos.0 && pos.0 < 120.0 {
-                if 20.0 <= pos.1 && pos.1 < 70.0 {
+            if self.play_button.x <= pos.0 && pos.0 < self.play_button.x + self.play_button.width { // If the x coordinate of the mouse position is in the range of the buttons
+                if self.play_button.y <= pos.1 && pos.1 < self.play_button.y + self.play_button.height { // Test if the mouse y position is over the first button
                     self.selected_button = 0;
                     self.click();
                 } else if 80.0 <= pos.1 && pos.1 < 130.0 {
@@ -77,24 +77,24 @@ impl MainMenu {
         }
     }
 
-    pub fn render(&self) {
+    pub fn render(&self) { // Render the buttons
         self.play_button.render(self.selected_button == 0);
         self.option_button.render(self.selected_button == 1);
         self.quit_button.render(self.selected_button == 2);
     }
 
-    fn click(&mut self) {
+    fn click(&mut self) { // Button click actions
         match Buttons::from(self.selected_button) {
             Buttons::Play => {
                 unsafe {
-                    GAME_STATE = crate::game::GameState::World;
+                    GAME_STATE = crate::game::GameState::World; // Change the game state
                 }
             }
             Buttons::Options => {
                 macroquad::prelude::info!("Not implemented yet!");
             },
             Buttons::Quit => {
-                crate::quit();
+                crate::quit(); // Quit the game
             }
         }
     }
