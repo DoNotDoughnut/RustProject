@@ -17,20 +17,25 @@ pub struct Level {
 
 }
 
-impl Level {
+impl Level { // Window size = 40 tiles x 22.5 tiles
 
     pub fn debug_level() -> Self {
-        let mut builder = LevelBuilder::new(27, 20);
+        let mut builder = LevelBuilder::new(40, 22);
 
-        builder.add_rows(Tile {
+        builder.add_row(Tile {
             tile_id: 0,
             solid: false,
-        }, 12);
+        });
 
         builder.add_rows(Tile {
             tile_id: 1,
             solid: true,
-        }, 8);
+        }, 20);
+
+        builder.add_row(Tile {
+            tile_id: 0,
+            solid: false,
+        });
 
         builder.build()
     }
@@ -46,7 +51,11 @@ impl Level {
             //let row = y * self.width;
             for x in 0..self.width {
                 let params = self.texture_from(textures, x, y);
-                macroquad::prelude::draw_texture(params.0, params.1, params.2, macroquad::color::WHITE);
+                // macroquad::texture::draw_texture_ex(params.0, params.1 * 2.0, params.2 * 2.0 + 4.0, macroquad::prelude::WHITE, macroquad::prelude::DrawTextureParams {
+                //     dest_size: Some(macroquad::prelude::vec2(16.0, 16.0)),
+                //     ..Default::default()
+                // });
+                crate::graphics::draw(params.0, params.1, params.2 + 2.0);
             }
         }
     }

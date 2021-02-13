@@ -1,7 +1,6 @@
 use macroquad::prelude::Image;
 use macroquad::prelude::Texture2D;
 use macroquad::prelude::Vec2;
-use macroquad::prelude::draw_texture;
 use macroquad::prelude::load_texture_from_image;
 
 use crate::input::Control;
@@ -48,7 +47,7 @@ impl crate::Entity for Player {
     }
 
     fn render(&self) {
-        draw_texture(self.texture, self.pos.x, self.pos.y, macroquad::prelude::WHITE); // Draw the player image
+        crate::graphics::draw(self.texture, self.pos.x, self.pos.y); // Draw the player image
     }
     
 }

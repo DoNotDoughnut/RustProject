@@ -15,13 +15,13 @@ build = "build/build.rs"
 readme = "README.md"
 publish = false
 
-[dependencies]
-
-macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" } # Game engine
-lazy_static = "1.4" # For global variables
-
 [profile.release]
 lto = true # Results in faster code at the cost of greater compile times
 codegen-units = 1
 opt-level = 3 # Maximum optimization for speed
 incremental = false # Prevents the saving of compile data to disk which speeds up the next compile (saves a lot of space)
+
+[dependencies]
+
+macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" } # Game engine
+lazy_static = "1.4" # For global variables
