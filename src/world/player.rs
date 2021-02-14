@@ -47,7 +47,7 @@ impl crate::Entity for Player {
     }
 
     fn render(&self) {
-        crate::graphics::draw(self.texture, self.pos.x, self.pos.y); // Draw the player image
+        crate::graphics::draw_scale(self.texture, self.pos.x, self.pos.y, crate::SCALE); // Draw the player image
     }
     
 }
@@ -59,7 +59,7 @@ impl Default for Player {
             Some(macroquad::prelude::ImageFormat::Png)) // Tell the image loader that the bytes are from a PNG
             .unwrap(); // Unwrap the image from the result because there should be no error (panic if there is one)
         Self {
-            pos: Vec2::new(10.0, 10.0),
+            pos: Vec2::new(30.0, 30.0),
             hitbox: Vec2::new(image.width as _, image.height as _),
             speed: 100.0,
             texture: load_texture_from_image(&image), // Set the image to be the player image

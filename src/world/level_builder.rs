@@ -7,6 +7,32 @@ pub struct LevelBuilder {
 
 impl LevelBuilder {
 
+    pub fn debug_level() -> Level {
+        let mut builder = LevelBuilder::new(40, 22);
+
+        builder.add_row(Tile {
+            tile_id: 0,
+            solid: true,
+        });
+
+        builder.add_rows(Tile {
+            tile_id: 1,
+            solid: false,
+        }, 20);
+
+        builder.add_row(Tile {
+            tile_id: 0,
+            solid: true,
+        });
+
+        builder.add_tile(Tile {
+            tile_id: 0,
+            solid: true,
+        }, 10, 10);
+
+        builder.build()
+    }
+
     pub fn new(width: u16, height: u16) -> Self {
         Self {
             level: Level {
@@ -15,6 +41,10 @@ impl LevelBuilder {
                 tiles: Vec::with_capacity((width*height) as usize),
             }
         }
+    }
+
+    pub fn add_tile(&mut self, tile: Tile, x: usize, y: usize) {
+        self.level.tiles[x + y * self.level.width as usize] = tile;
     }
 
     pub fn add_rows(&mut self, tile: Tile, rows: usize) {

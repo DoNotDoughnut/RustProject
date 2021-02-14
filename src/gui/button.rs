@@ -25,7 +25,7 @@ impl Button {
             text: text.map(|text| text.to_owned()),
             button_params: ButtonParams {
                 thickness: (height / 8.0).ceil(),
-                text_x: x + 5.0,
+                text_x: x + 10.0,
                 text_y: y + height / 2.0,
                 font_size: height / 2.0,
             },

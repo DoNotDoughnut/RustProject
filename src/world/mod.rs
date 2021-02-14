@@ -1,16 +1,17 @@
 use self::player::Player;
-use self::level::Level;
 
-mod level;
-mod tile;
 mod player;
 
 pub mod level_builder;
+pub mod tile;
+pub mod level;
+
+pub use u16 as TileId;
+pub static TILE_SIZE: u16 = 8;
 
 use std::collections::HashMap;
 use macroquad::prelude::Texture2D;
-pub use u16 as TileId;
-pub static TILE_SIZE: u16 = 8;
+use self::level::Level;
 
 pub struct World {
 
@@ -34,7 +35,7 @@ impl World {
     }
 
     pub async fn load_level(&mut self) {
-        self.level = Level::debug_level();
+        self.level = self::level_builder::LevelBuilder::debug_level();
     }
 
 }

@@ -24,4 +24,5 @@ incremental = false # Prevents the saving of compile data to disk which speeds u
 [dependencies]
 
 macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" } # Game engine
+nanoserde = "0.1" # Serialization / Deserializatin
 lazy_static = "1.4" # For global variables

@@ -1,14 +1,15 @@
 use std::collections::HashMap;
 use macroquad::prelude::Texture2D;
+use nanoserde::{SerJson, DeJson};
 use u16 as MapSize;
 use super::TILE_SIZE;
 use super::TileId;
-use super::level_builder::LevelBuilder;
+//use super::level_builder::LevelBuilder;
 use super::tile::Tile;
 
 type TexMap = HashMap<TileId, Texture2D>;
 
-#[derive(Default)]
+#[derive(Default, SerJson, DeJson)]
 pub struct Level {
 
     pub width: MapSize,
@@ -18,27 +19,6 @@ pub struct Level {
 }
 
 impl Level { // Window size = 40 tiles x 22.5 tiles
-
-    pub fn debug_level() -> Self {
-        let mut builder = LevelBuilder::new(40, 22);
-
-        builder.add_row(Tile {
-            tile_id: 0,
-            solid: false,
-        });
-
-        builder.add_rows(Tile {
-            tile_id: 1,
-            solid: true,
-        }, 20);
-
-        builder.add_row(Tile {
-            tile_id: 0,
-            solid: false,
-        });
-
-        builder.build()
-    }
 
     // pub fn new(path: String) -> Self {
     //     Self {
@@ -55,7 +35,7 @@ impl Level { // Window size = 40 tiles x 22.5 tiles
                 //     dest_size: Some(macroquad::prelude::vec2(16.0, 16.0)),
                 //     ..Default::default()
                 // });
-                crate::graphics::draw(params.0, params.1, params.2 + 2.0);
+                crate::graphics::draw_scale(params.0, params.1, params.2 + 2.0, crate::SCALE);
             }
         }
     }

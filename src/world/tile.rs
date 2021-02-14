@@ -1,6 +1,7 @@
-use crate::world::TileId;
+use super::TileId;
+use nanoserde::{SerJson, DeJson};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, SerJson, DeJson)]
 pub struct Tile {
 
     pub tile_id: TileId,

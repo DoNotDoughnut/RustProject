@@ -2,7 +2,7 @@ use macroquad::prelude::*;
 
 mod game;
 mod input;
-//mod configuration;
+mod io;
 mod graphics;
 mod gui;
 
@@ -10,7 +10,7 @@ mod menu;
 mod world;
 
 pub static NAME: &str = "Brawlstars Clone"; // name of project
-pub static SCALE: u8 = 4; // pixel scaling (pixels drawn on window are 2x normal pixel size)
+pub static SCALE: f32 = 4.0; // pixel scaling (pixels drawn on window are 4x normal pixel size)
 pub static WIDTH: u16 = 320; // view width
 pub static HEIGHT: u16 = WIDTH * 9 / 16; // view height
 
@@ -29,8 +29,8 @@ async fn main() {
 
     game.load().await; // Load stuff
 
-    let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32, HEIGHT as f32)); // Create a camera to view the screen with
-    set_camera(camera); // activate the camera
+    // let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32, HEIGHT as f32)); // Create a camera to view the screen with
+    // set_camera(camera); // activate the camera
 
     loop { // runs at monitor refresh rate (usually 60 times per second)
         
