@@ -45,17 +45,17 @@ impl MainMenu {
 
     pub fn update(&mut self, _delta: f32) {
         if macroquad::prelude::is_mouse_button_pressed(macroquad::prelude::MouseButton::Left) { // Test for left click
-            let mut pos = macroquad::prelude::mouse_position(); // Get mouse position
-            pos.0 /= crate::SCALE as f32; // Scale the mouse position
-            pos.1 /= crate::SCALE as f32;
+            let pos = macroquad::prelude::mouse_position(); // Get mouse position
+            // pos.0 /= crate::SCALE as f32; // Scale the mouse position
+            // pos.1 /= crate::SCALE as f32;
             if self.play_button.x <= pos.0 && pos.0 < self.play_button.x + self.play_button.width { // If the x coordinate of the mouse position is in the range of the buttons
                 if self.play_button.y <= pos.1 && pos.1 < self.play_button.y + self.play_button.height { // Test if the mouse y position is over the first button
                     self.selected_button = 0;
                     self.click();
-                } else if 80.0 <= pos.1 && pos.1 < 130.0 {
+                } else if self.option_button.y <= pos.1 && pos.1 < self.option_button.y + self.option_button.height {
                     self.selected_button = 1;
                     self.click();
-                } else if 140.0 <= pos.1 && pos.1 < 190.0 {
+                } else if self.quit_button.y <= pos.1 && pos.1 < self.quit_button.y + self.quit_button.height {
                     self.selected_button = 2;
                     self.click();
                 }

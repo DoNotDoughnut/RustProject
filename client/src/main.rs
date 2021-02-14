@@ -21,11 +21,11 @@ static mut QUIT: bool = false; // Creates a boolean that, when false, allows the
 #[macroquad::main(settings)] // Macroquad creates a window
 async fn main() {
 
-    info!("Starting {}", NAME);
+    info!("Starting client for {}", NAME);
 
     //let configuration = crate::configuration::Configuration::load_or_default().await;
 
-    let mut game = game::Game::new(); // Create an instance to hold game variables and structures
+    let mut game = crate::game::Game::new(); // Create an instance to hold game variables and structures
 
     game.load().await; // Load stuff
 
@@ -34,17 +34,17 @@ async fn main() {
 
     loop { // runs at monitor refresh rate (usually 60 times per second)
         
-        game.update(get_frame_time()); // Update the game state (with delta (frame) time so physics and such can run at a constant speed no matter what the framerate is)
-        clear_background(GRAY);
+        game.update(macroquad::prelude::get_frame_time()); // Update the game state (with delta (frame) time so physics and such can run at a constant speed no matter what the framerate is)
+        macroquad::prelude::clear_background(macroquad::prelude::BROWN);
         game.render(); // render the stuff on screen
-        if unsafe{QUIT} {
+        if unsafe{crate::QUIT} {
             break;
         }
-        next_frame().await; // wait for the next frame before looping
+        macroquad::prelude::next_frame().await; // wait for the next frame before looping
 
     }
 
-    game.quit(); // Run the quit() method for stuff that needs to do things when the game closes
+    game.quit(); // Run the quit() method for stuff that needs to do things when the game closes   
 
 }
 

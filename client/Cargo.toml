@@ -1,0 +1,23 @@
+[package]
+name = "brawlstars-rs"
+version = "0.0.1"
+authors = [
+    "Rhys Holloway <rhyswilliamholloway@gmail.com>", 
+    "Johnny Lin", 
+    "Nareg K."
+]
+description = """
+Shared project for learning Rust, attempt to make a clone of the game Brawlstars
+"""
+repository = "https://github.com/DoNotDoughnut/RustProject"
+edition = "2018"
+build = "build/build.rs"
+readme = "README.md"
+default-run = "brawlstars-rs"
+publish = false
+
+[dependencies]
+
+macroquad = { git = "https://github.com/DoNotDoughnut/macroquad" } # Game engine
+nanoserde = "0.1" # Serialization / Deserializatin
+lazy_static = "1.4" # For global variables
