@@ -1,4 +1,7 @@
+use io::PersistentData;
+use io::configuration::Configuration;
 use macroquad::prelude::*;
+use parking_lot::Mutex;
 
 mod game;
 mod character;
@@ -16,33 +19,36 @@ pub static SCALE: f32 = 4.0; // pixel scaling (pixels drawn on window are 4x nor
 pub static WIDTH: u16 = 320; // view width
 pub static HEIGHT: u16 = WIDTH * 9 / 16; // view height
 
-pub static DESKTOP: bool = cfg!(target_os = "windows") || cfg!(target_os = "macos") || cfg!(target_os = "linux");
+lazy_static::lazy_static! {
+    static ref QUIT: Mutex<bool> = Mutex::new(false); // Creates a boolean that, when false, allows the program to end
+}
 
-static mut QUIT: bool = false; // Creates a boolean that, when false, allows the program to end
 
 #[macroquad::main(settings)] // Macroquad creates a window
 async fn main() {
 
     info!("Starting client for {}", NAME);
 
-    //let configuration = crate::configuration::Configuration::load_or_default().await;
+    let configuration = Configuration::load().await;
+    configuration.on_load();
+    macroquad::experimental::collections::storage::store(configuration);
 
-    let mut game = crate::game::Game::new(); // Create an instance to hold game variables and structures
-
+    let mut game = game::Game::new(); // Create an instance to hold game variables and structures
     game.load().await; // Load stuff
 
-    // let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32, HEIGHT as f32)); // Create a camera to view the screen with
-    // set_camera(camera); // activate the camera
+    // set_camera(Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32, HEIGHT as f32))); // Create a camera to view the screen with
 
     loop { // runs at monitor refresh rate (usually 60 times per second)
-        // socket.manual_poll(std::time::Instant::now());
         
         game.update(macroquad::prelude::get_frame_time()); // Update the game state (with delta (frame) time so physics and such can run at a constant speed no matter what the framerate is)
+        
         macroquad::prelude::clear_background(macroquad::prelude::BROWN);
         game.render(); // render the stuff on screen
-        if unsafe{crate::QUIT} {
+
+        if *QUIT.lock() {
             break;
         }
+
         macroquad::prelude::next_frame().await; // wait for the next frame before looping
 
     }
@@ -52,6 +58,7 @@ async fn main() {
 }
 
 fn settings() -> Conf { // Window settings
+
     Conf {
         window_title: NAME.to_owned(),
         window_width: WIDTH as i32 * SCALE as i32,
@@ -62,9 +69,7 @@ fn settings() -> Conf { // Window settings
 }
 
 pub fn quit() { // Function to run to queue the close sequence of the app
-    unsafe {
-        QUIT = true;
-    }
+    *QUIT.lock() = true;
 }
 
 pub trait Entity {

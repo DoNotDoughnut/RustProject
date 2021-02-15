@@ -1,5 +1,5 @@
-use super::level::Level;
-use super::tile::Tile;
+use super::Level;
+use crate::world::tile::Tile;
 
 pub struct LevelBuilder {
     level: Level,

@@ -1,5 +1,6 @@
 use macroquad::prelude::get_fps;
 use macroquad::prelude::info;
+use parking_lot::Mutex;
 
 use crate::Entity;
 use crate::menu::MainMenu;
@@ -13,7 +14,9 @@ pub struct Game {
 
 }
 
-static mut GAME_STATE: GameState = GameState::MainMenu; // Set the global gamestate variable that can be changed
+lazy_static::lazy_static! {
+    static ref GAME_STATE: Mutex<GameState> = Mutex::new(GameState::MainMenu); // Set the global gamestate variable that can be changed
+}
 
 impl Game {
 
@@ -30,12 +33,13 @@ impl Game {
     }
     
     pub fn update(&mut self, delta: f32) { // delta * frame rate = 1
-        unsafe {
-            if GAME_STATE != self.game_state { // Change the game state if it is different to the stored one
-                self.quit_state(); // Run the code that is supposed to run when a game state stops
-                self.game_state = GAME_STATE; // Update the stored game state
-            }
+
+        let scene = GAME_STATE.lock();
+        if scene.eq(&self.game_state) { // Change the game state if it is different to the stored one
+            self.quit_state(); // Run the code that is supposed to run when a game state stops
+            self.game_state = *scene; // Update the stored game state
         }
+
         match &self.game_state {
             GameState::MainMenu => {
                 self.main_menu.update(delta);
@@ -85,7 +89,5 @@ pub enum GameState {
 }
 
 pub fn change_game_state(game_state: GameState) {
-    unsafe {
-        GAME_STATE = game_state; // Change the game state to the one provided
-    }
+    *GAME_STATE.lock() = game_state; // Change the game state to the one provided
 }

@@ -2,7 +2,6 @@ use self::player::Player;
 
 mod player;
 
-pub mod level_builder;
 pub mod tile;
 pub mod level;
 
@@ -40,7 +39,7 @@ impl World {
 
     pub async fn load_level(&mut self) {
         // self.player.character = Some(&crate::character::NAREG);
-        self.level = self::level_builder::LevelBuilder::debug_level();
+        self.level = self::level::level_builder::LevelBuilder::debug_level();
     }
 
 }

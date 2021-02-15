@@ -7,6 +7,8 @@ use super::TileId;
 //use super::level_builder::LevelBuilder;
 use super::tile::Tile;
 
+pub mod level_builder;
+
 type TexMap = HashMap<TileId, Texture2D>;
 
 #[derive(Default, Serialize, Deserialize)]
