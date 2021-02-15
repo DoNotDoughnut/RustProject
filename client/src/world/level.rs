@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use macroquad::prelude::Texture2D;
-use nanoserde::{SerJson, DeJson};
+use serde::{Serialize, Deserialize};
 use u16 as MapSize;
 use super::TILE_SIZE;
 use super::TileId;
@@ -9,7 +9,7 @@ use super::tile::Tile;
 
 type TexMap = HashMap<TileId, Texture2D>;
 
-#[derive(Default, SerJson, DeJson)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct Level {
 
     pub width: MapSize,

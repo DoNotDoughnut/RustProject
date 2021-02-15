@@ -1,7 +1,7 @@
 use super::TileId;
-use nanoserde::{SerJson, DeJson};
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Clone, Copy, SerJson, DeJson)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct Tile {
 
     pub tile_id: TileId,

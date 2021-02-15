@@ -1,6 +1,5 @@
 use crate::gui::button::Button;
-use crate::input::Control;
-use crate::input::is_control_pressed;
+use crate::io::input;
 
 pub struct MainMenu {
 
@@ -61,17 +60,17 @@ impl MainMenu {
                 }
             }
         }
-        if is_control_pressed(Control::Up) {
+        if input::is_control_pressed(input::Control::Up) {
             if self.selected_button > 0 {
                 self.selected_button -= 1;
             }
         }
-        if is_control_pressed(Control::Down) {
+        if input::is_control_pressed(input::Control::Down) {
             if self.selected_button < 2 {
                 self.selected_button += 1;
             }
         }
-        if is_control_pressed(Control::A) {
+        if input::is_control_pressed(input::Control::A) {
             self.click();
         }
     }

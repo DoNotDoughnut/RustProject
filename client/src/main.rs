@@ -1,10 +1,12 @@
 use macroquad::prelude::*;
 
 mod game;
-mod input;
+mod character;
 mod io;
 mod graphics;
 mod gui;
+
+// mod net;
 
 mod menu;
 mod world;
@@ -33,6 +35,7 @@ async fn main() {
     // set_camera(camera); // activate the camera
 
     loop { // runs at monitor refresh rate (usually 60 times per second)
+        // socket.manual_poll(std::time::Instant::now());
         
         game.update(macroquad::prelude::get_frame_time()); // Update the game state (with delta (frame) time so physics and such can run at a constant speed no matter what the framerate is)
         macroquad::prelude::clear_background(macroquad::prelude::BROWN);

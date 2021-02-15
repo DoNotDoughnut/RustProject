@@ -19,6 +19,9 @@ pub struct World {
     player: Player,
     textures: HashMap<TileId, Texture2D>,
 
+    //players: HashMap<u16, PlayerData>,
+    //player_texture: Texture2D
+
 }
 
 impl World {
@@ -29,12 +32,14 @@ impl World {
         textures.insert(1, tex_bytes(include_bytes!("../../build/assets/tile1.png")).unwrap());
         Self {
             level: Level::default(),
+            //players: HashMap::new(),
             player: Player::default(),
             textures: textures,
         }
     }
 
     pub async fn load_level(&mut self) {
+        // self.player.character = Some(&crate::character::NAREG);
         self.level = self::level_builder::LevelBuilder::debug_level();
     }
 
@@ -43,11 +48,40 @@ impl World {
 impl crate::Entity for World {
     fn update(&mut self, delta: f32) {
         self.player.update(delta);
+
+
+        // let mut socket = crate::net::SOCKET.lock();
+
+        // if macroquad::prelude::is_key_pressed(macroquad::prelude::KeyCode::X) {
+        //     socket.send(laminar::Packet::reliable_ordered( *crate::net::SERVER, b"x".to_vec(), None));
+        // }
+
+        // loop {
+        //     match socket.recv() {
+        //         Some(event) => match event {
+        //             laminar::SocketEvent::Packet(packet) => {
+        //                 let data: Result<crate::net::PlayerData, nanoserde::DeBinErr> = nanoserde::DeBin::deserialize_bin(packet.payload());
+        //                 if let Ok(data) = data {
+        //                     self.players.insert(packet.addr().port(), data);
+        //                 }
+        //             }
+        //             _ => (),
+        //         }
+        //         None => {
+        //             break;
+        //         }
+        //     }
+        // }
+
+
     }
 
     fn render(&self) {
         self.level.render(&self.textures);
         self.player.render();
+        // for data in self.players.values() {
+        //     crate::graphics::draw_scale(self.player.texture, data.x, data.y, crate::SCALE);
+        // }
     }
 }
 

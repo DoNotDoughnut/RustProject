@@ -1,14 +1,23 @@
-use macroquad::prelude::warn;
-use nanoserde::{DeJson, SerJson};
+use std::collections::{HashMap, HashSet};
 
-#[derive(DeJson, SerJson)]
+use macroquad::prelude::KeyCode;
+use macroquad::prelude::warn;
+use serde::{Deserialize, Serialize};
+
+use super::input::Control;
+
+#[derive(Deserialize, Serialize)]
 pub struct Configuration {
+
+    pub controls: HashMap<Control, HashSet<KeyCode>>,
 
 }
 
 impl Default for Configuration {
     fn default() -> Self {
-        Self {}
+        Self {
+            controls: super::input::keyboard::default(),
+        }
     }
 }
 
@@ -19,7 +28,7 @@ impl Configuration {
             Ok(bytes) => {
                 match std::str::from_utf8(&bytes) {
                     Ok(content) => {
-                        let result: Result<Configuration, nanoserde::DeJsonErr> = nanoserde::DeJson::deserialize_json(content);
+                        let result: Result<Configuration, serde_json::Error> = serde_json::from_str(content);
                         match result {
                             Ok(config) => config,
                             Err(err) => {
@@ -39,6 +48,10 @@ impl Configuration {
                 Configuration::default()
             }
         }
+    }
+
+    pub fn on_load(&self) {
+        *crate::io::input::keyboard::KEYBOARD_CONTROLS.write() = self.controls.clone();
     }
 
 }
