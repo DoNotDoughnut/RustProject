@@ -9,7 +9,7 @@ mod io;
 mod graphics;
 mod gui;
 
-// mod net;
+mod net;
 
 mod menu;
 mod world;
@@ -26,6 +26,31 @@ lazy_static::lazy_static! {
 
 #[macroquad::main(settings)] // Macroquad creates a window
 async fn main() {
+    net::connect(
+        "defaultKey",
+        "127.0.0.1",
+        7349,
+        "tcp",
+    );
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        while net::connected() == false {
+            clear_background(BLACK);
+            draw_text(
+                &format!(
+                    "Connecting {}",
+                    ".".repeat(((get_time() * 2.0) as usize) % 4)
+                ),
+                screen_width() / 2.0 - 100.0,
+                screen_height() / 2.0,
+                40.,
+                WHITE,
+            );
+
+            next_frame().await;
+        }
+    }
 
     info!("Starting client for {}", NAME);
 
@@ -36,7 +61,12 @@ async fn main() {
     let mut game = game::Game::new(); // Create an instance to hold game variables and structures
     game.load().await; // Load stuff
 
-    // set_camera(Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32, HEIGHT as f32))); // Create a camera to view the screen with
+    set_camera(Camera2D::from_display_rect(Rect::new(0.0, 0.0, WIDTH as f32 * SCALE, HEIGHT as f32 * SCALE))); // Create a camera to view the screen with
+
+    let network_id = net::self_id();
+    let player = scene::add_node(world::player::Player::default());
+    let net_syncronizer = scene::add_node(net::syncronizer::NetSyncronizer::new(network_id));
+    scene::add_node(net::global_events::GlobalEvents::new(player, net_syncronizer));
 
     loop { // runs at monitor refresh rate (usually 60 times per second)
         

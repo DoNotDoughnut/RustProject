@@ -1,6 +1,6 @@
 use self::player::Player;
 
-mod player;
+pub mod player;
 
 pub mod tile;
 pub mod level;
@@ -46,7 +46,7 @@ impl World {
 
 impl crate::Entity for World {
     fn update(&mut self, delta: f32) {
-        self.player.update(delta);
+        // self.player.update(delta);
 
 
         // let mut socket = crate::net::SOCKET.lock();
@@ -77,7 +77,7 @@ impl crate::Entity for World {
 
     fn render(&self) {
         self.level.render(&self.textures);
-        self.player.render();
+        // self.player.render();
         // for data in self.players.values() {
         //     crate::graphics::draw_scale(self.player.texture, data.x, data.y, crate::SCALE);
         // }

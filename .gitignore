@@ -1,4 +1,6 @@
 /target
 /Cargo.lock
+/client/target
+/client/Cargo.lock
 
 /config.json
