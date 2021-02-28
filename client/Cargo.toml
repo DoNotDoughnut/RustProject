@@ -1,0 +1,17 @@
+[package]
+name = "brawlstars-rs-client"
+version = "0.0.1"
+authors = [
+    "Rhys Holloway <rhyswilliamholloway@gmail.com>",
+]
+description = """
+Shared project for learning Rust, attempt to make a clone of the game Brawlstars
+"""
+repository = "https://github.com/DoNotDoughnut/RustProject"
+edition = "2018"
+readme = "README.md"
+publish = false
+default-run = "brawlstars-rs-client"
+
+[dependencies]
+bevy = { version = "0.4" }
